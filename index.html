@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b63f6" />
+  <title>MS BizFlow</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="brand">MS BizFlow</div>
+        <div class="business-name" id="businessName">MS Multi Services LLC</div>
+      </div>
+      <button class="icon-btn" id="settingsBtn" aria-label="Configuración">⚙️</button>
+    </header>
+
+    <main>
+      <section id="inicio" class="view active">
+        <div class="hero-card">
+          <div>
+            <div class="eyebrow">Resumen del mes</div>
+            <h1 id="monthLabel">Agosto 2026</h1>
+          </div>
+          <div class="pill success" id="statusPill">Al día</div>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <span>Ingresos</span>
+            <strong id="incomeTotal">$0.00</strong>
+          </article>
+          <article class="metric-card">
+            <span>Gastos</span>
+            <strong id="expenseTotal">$0.00</strong>
+          </article>
+          <article class="metric-card">
+            <span>Resultado</span>
+            <strong id="profitTotal">$0.00</strong>
+          </article>
+          <article class="metric-card">
+            <span>Millas negocio</span>
+            <strong id="milesTotal">0</strong>
+          </article>
+        </div>
+
+        <div class="quick-actions">
+          <button class="action-btn" data-open="expenseModal"><span>−</span>Gasto</button>
+          <button class="action-btn" data-open="incomeModal"><span>＋</span>Ingreso</button>
+          <button class="action-btn" data-tab="millas"><span>🚗</span>Millas</button>
+          <button class="action-btn" data-open="receiptModal"><span>📷</span>Recibo</button>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="eyebrow">Próximas obligaciones</div>
+              <h2>Taxes y fechas</h2>
+            </div>
+          </div>
+          <div class="deadline-card">
+            <div>
+              <strong>Sales Tax — Rhode Island</strong>
+              <p>Vencimiento configurado: día 20 del mes siguiente.</p>
+            </div>
+            <span class="date-badge">20</span>
+          </div>
+          <p class="fineprint">MS BizFlow organiza datos y recordatorios. No presenta impuestos automáticamente ni sustituye asesoría fiscal profesional.</p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="eyebrow">Actividad reciente</div>
+              <h2>Últimos movimientos</h2>
+            </div>
+            <button class="text-btn" data-tab="transacciones">Ver todo</button>
+          </div>
+          <div id="recentList" class="list empty-state">Aún no hay movimientos registrados.</div>
+        </section>
+      </section>
+
+      <section id="transacciones" class="view">
+        <div class="page-title-row">
+          <div>
+            <div class="eyebrow">Contabilidad diaria</div>
+            <h1>Transacciones</h1>
+          </div>
+          <button class="primary-btn" id="addTxnBtn">+ Agregar</button>
+        </div>
+        <div class="filter-row">
+          <button class="chip active" data-filter="all">Todas</button>
+          <button class="chip" data-filter="income">Ingresos</button>
+          <button class="chip" data-filter="expense">Gastos</button>
+        </div>
+        <div id="transactionList" class="list empty-state">No hay transacciones.</div>
+      </section>
+
+      <section id="millas" class="view">
+        <div class="page-title-row">
+          <div>
+            <div class="eyebrow">Vehículo y viajes</div>
+            <h1>Millaje</h1>
+          </div>
+          <span class="pill">Negocio / Personal</span>
+        </div>
+
+        <div class="mileage-card">
+          <div class="odometer" id="liveTimer">00:00:00</div>
+          <p id="tripStatus">No hay viaje activo</p>
+          <div class="mileage-actions">
+            <button class="primary-btn" id="startTripBtn">Iniciar viaje</button>
+            <button class="danger-btn hidden" id="stopTripBtn">Terminar viaje</button>
+          </div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Agregar viaje manual</h2>
+          </div>
+          <form id="manualMileageForm" class="form-grid">
+            <label>Fecha<input type="date" name="date" required /></label>
+            <label>Millas<input type="number" step="0.1" min="0" name="miles" required /></label>
+            <label>Tipo<select name="type"><option value="business">Negocio</option><option value="personal">Personal</option></select></label>
+            <label>Propósito<select name="purpose"><option>Buscar clientes</option><option>Visitar cliente</option><option>Entregar tarjetas</option><option>Comprar materiales</option><option>Banco</option><option>Otro</option></select></label>
+            <label class="full">Notas<input type="text" name="notes" placeholder="Providence → Warwick, etc." /></label>
+            <button class="primary-btn full" type="submit">Guardar viaje</button>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head"><h2>Viajes registrados</h2></div>
+          <div id="mileageList" class="list empty-state">No hay viajes registrados.</div>
+        </section>
+      </section>
+
+      <section id="clientes" class="view">
+        <div class="page-title-row">
+          <div><div class="eyebrow">CRM básico</div><h1>Clientes</h1></div>
+          <button class="primary-btn" id="addClientBtn">+ Cliente</button>
+        </div>
+        <div id="clientList" class="list empty-state">Aún no has agregado clientes.</div>
+      </section>
+
+      <section id="taxes" class="view">
+        <div class="page-title-row">
+          <div><div class="eyebrow">Organización fiscal</div><h1>Taxes</h1></div>
+          <span class="pill warning">Estimaciones</span>
+        </div>
+        <div class="metric-grid">
+          <article class="metric-card"><span>Ingresos YTD</span><strong id="taxIncome">$0.00</strong></article>
+          <article class="metric-card"><span>Gastos YTD</span><strong id="taxExpenses">$0.00</strong></article>
+          <article class="metric-card"><span>Resultado YTD</span><strong id="taxProfit">$0.00</strong></article>
+          <article class="metric-card"><span>Sales tax cobrado</span><strong id="salesTaxCollected">$0.00</strong></article>
+        </div>
+        <section class="panel">
+          <div class="panel-head"><h2>Calendario fiscal</h2></div>
+          <div class="deadline-card"><div><strong>Sales Tax mensual</strong><p>Día 20 del mes siguiente, según configuración.</p></div><span class="date-badge">20</span></div>
+          <div class="deadline-card"><div><strong>Declaración anual LLC</strong><p>Guarda aquí la fecha oficial que corresponda a tu entidad.</p></div><span class="date-badge">AÑO</span></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>Exportar resumen</h2></div>
+          <button class="secondary-btn" id="exportBtn">Exportar CSV</button>
+        </section>
+      </section>
+
+      <section id="mas" class="view">
+        <div class="page-title-row"><div><div class="eyebrow">Configuración</div><h1>Más</h1></div></div>
+        <section class="panel">
+          <h2>Empresa</h2>
+          <form id="businessForm" class="form-grid">
+            <label class="full">Nombre de la empresa<input name="name" value="MS Multi Services LLC" /></label>
+            <label class="full">Dirección<input name="address" value="1940 Mineral Spring Ave, North Providence, RI 02904" /></label>
+            <label>Estado<input name="state" value="Rhode Island" /></label>
+            <label>Año fiscal<input name="taxYear" type="number" value="2026" /></label>
+            <button class="primary-btn full" type="submit">Guardar empresa</button>
+          </form>
+        </section>
+        <section class="panel">
+          <h2>Datos</h2>
+          <div class="stack-actions">
+            <button class="secondary-btn" id="backupBtn">Descargar copia JSON</button>
+            <label class="secondary-btn file-label">Importar copia<input id="restoreInput" type="file" accept="application/json" hidden /></label>
+            <button class="danger-outline" id="resetBtn">Borrar datos locales</button>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Seguridad y versión</h2>
+          <p class="fineprint">Esta primera versión guarda los datos únicamente en este navegador/dispositivo. La siguiente fase conectará cuentas, autenticación y base de datos segura en la nube.</p>
+          <p class="fineprint">MS BizFlow MVP 0.1</p>
+        </section>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="inicio">⌂<span>Inicio</span></button>
+      <button class="nav-btn" data-tab="transacciones">↕<span>Movimientos</span></button>
+      <button class="nav-plus" id="navPlus">＋</button>
+      <button class="nav-btn" data-tab="clientes">👥<span>Clientes</span></button>
+      <button class="nav-btn" data-tab="mas">☰<span>Más</span></button>
+    </nav>
+  </div>
+
+  <dialog id="expenseModal" class="modal">
+    <form method="dialog" id="expenseForm" class="modal-card txn-form">
+      <div class="modal-head"><div><div class="eyebrow">Nuevo movimiento</div><h2>Agregar gasto</h2></div><button class="icon-btn close-btn" value="cancel">✕</button></div>
+      <input type="hidden" name="type" value="expense" />
+      <label>Monto<input type="number" name="amount" step="0.01" min="0.01" required placeholder="0.00" /></label>
+      <label>Fecha<input type="date" name="date" required /></label>
+      <label>Categoría<select name="category"><option>Renta</option><option>Teléfono</option><option>Internet</option><option>Suministros</option><option>Equipo</option><option>Vehículo</option><option>Publicidad</option><option>Seguro</option><option>Software</option><option>Otro</option></select></label>
+      <label>Método de pago<select name="payment"><option>Efectivo</option><option>Tarjeta negocio</option><option>Tarjeta personal</option><option>Transferencia</option><option>Otro</option></select></label>
+      <label>Uso del negocio (%)<input type="number" name="businessUse" min="0" max="100" value="100" /></label>
+      <label class="check"><input type="checkbox" name="noReceipt" /> No tengo recibo</label>
+      <label>Descripción<textarea name="description" placeholder="Qué compraste y para qué..." required></textarea></label>
+      <label>Notas<textarea name="notes" placeholder="Compra usada, vendedor particular, etc."></textarea></label>
+      <div class="modal-actions"><button class="secondary-btn" value="cancel">Cancelar</button><button class="primary-btn" value="default">Guardar gasto</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="incomeModal" class="modal">
+    <form method="dialog" id="incomeForm" class="modal-card txn-form">
+      <div class="modal-head"><div><div class="eyebrow">Nuevo movimiento</div><h2>Agregar ingreso</h2></div><button class="icon-btn close-btn" value="cancel">✕</button></div>
+      <input type="hidden" name="type" value="income" />
+      <label>Monto<input type="number" name="amount" step="0.01" min="0.01" required placeholder="0.00" /></label>
+      <label>Fecha<input type="date" name="date" required /></label>
+      <label>Cliente<input type="text" name="client" placeholder="Nombre del cliente" /></label>
+      <label>Método de pago<select name="payment"><option>Efectivo</option><option>Tarjeta</option><option>Zelle</option><option>ACH</option><option>Cheque</option><option>Otro</option></select></label>
+      <label>Sales tax cobrado<input type="number" name="salesTax" step="0.01" min="0" value="0" /></label>
+      <label>Descripción<textarea name="description" placeholder="Servicio o venta..." required></textarea></label>
+      <div class="modal-actions"><button class="secondary-btn" value="cancel">Cancelar</button><button class="primary-btn" value="default">Guardar ingreso</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="receiptModal" class="modal">
+    <form method="dialog" id="receiptForm" class="modal-card">
+      <div class="modal-head"><div><div class="eyebrow">Documento</div><h2>Guardar recibo</h2></div><button class="icon-btn close-btn" value="cancel">✕</button></div>
+      <label>Foto o archivo<input type="file" name="file" accept="image/*,.pdf" required /></label>
+      <label>Descripción<input type="text" name="description" placeholder="Ej. Internet agosto" /></label>
+      <p class="fineprint">En este MVP, archivos pequeños se guardan localmente en el navegador. Evita documentos sensibles hasta activar almacenamiento cifrado en la nube.</p>
+      <div class="modal-actions"><button class="secondary-btn" value="cancel">Cancelar</button><button class="primary-btn" value="default">Guardar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="clientModal" class="modal">
+    <form method="dialog" id="clientForm" class="modal-card">
+      <div class="modal-head"><div><div class="eyebrow">CRM</div><h2>Nuevo cliente</h2></div><button class="icon-btn close-btn" value="cancel">✕</button></div>
+      <label>Nombre<input type="text" name="name" required /></label>
+      <label>Teléfono<input type="tel" name="phone" /></label>
+      <label>Email<input type="email" name="email" /></label>
+      <label>Notas<textarea name="notes"></textarea></label>
+      <div class="modal-actions"><button class="secondary-btn" value="cancel">Cancelar</button><button class="primary-btn" value="default">Guardar cliente</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="quickModal" class="modal">
+    <div class="modal-card">
+      <div class="modal-head"><div><div class="eyebrow">Acción rápida</div><h2>¿Qué quieres registrar?</h2></div><button class="icon-btn close-dialog">✕</button></div>
+      <div class="quick-grid">
+        <button class="quick-choice" data-open="expenseModal">− Gasto</button>
+        <button class="quick-choice" data-open="incomeModal">＋ Ingreso</button>
+        <button class="quick-choice" data-tab="millas">🚗 Millas</button>
+        <button class="quick-choice" data-open="receiptModal">📷 Recibo</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
